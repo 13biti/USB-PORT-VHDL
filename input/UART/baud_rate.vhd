@@ -9,7 +9,7 @@ entity baud_rate_entity is
   );
 end baud_rate_entity;
 architecture baud_rate_arch of baud_rate_entity is 
-  signal counter , period : integer := 0;
+  signal counter , period , last_period : integer := 0;
   signal prev_input_status : std_logic := input;
   signal clk : std_logic := '0';
   signal timer : time := 1 sec /clk_rate;
@@ -27,9 +27,10 @@ begin
   period_counter : process(clk,input)
   begin 
     if rising_edge(clk) then
-      if input /= prev_input_status then 
+      if input /= prev_input_status then
+        last_period <= period;
         period <= counter ;
-        counter <= 0;
+        counter <= 1;
       else 
         counter <= counter + 1 ;
       end if; 
@@ -39,7 +40,15 @@ begin
   colculate_baud : process(period)
   begin 
     if period > 0 then 
-      baud_rate <= clk_rate / period;
+      if period /= last_period then
+        if last_period = 0 then 
+          baud_rate <= clk_rate / period;
+        elsif last_period /= 0 and period < (2*(last_period-1)) then 
+          baud_rate <= clk_rate / period;
+        end if ;
+      end if ;
+    else 
+      baud_rate <= 0;
     end if ;
   end process ;
 end baud_rate_arch;
