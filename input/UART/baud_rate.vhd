@@ -11,15 +11,16 @@ end baud_rate_entity;
 architecture baud_rate_arch of baud_rate_entity is 
   signal counter , period : integer := 0;
   signal prev_input_status : std_logic := input;
-  signal clk : std_logic := '0'
-  signal timer : integer := 1/clk_rate;
+  signal clk : std_logic := '0';
+  signal timer : time := 1 sec /clk_rate;
 begin 
     clk_gen_process : process
     begin 
         while true loop
             clk <= '0';
-            wait for timer / 2;
+            wait for timer/2 ;
             clk <= '1';
+            wait for timer/2 ;
         end loop;
     end process;
 
