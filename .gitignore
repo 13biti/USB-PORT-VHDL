@@ -1,0 +1,17 @@
+#ignore everything !
+*
+# except :
+!/*/
+!/*/*/
+!**/*.vhd
+!**/*.gitignore
+!**/*.html
+!**/*.xise
+!**/*.xst
+!**/*.ise
+!**/*.ngc
+!**/*.ncf
+!**/*.ngd
+!**/*.npl
+!**/*.xrpt
+!**/*.xwbt
