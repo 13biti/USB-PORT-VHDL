@@ -18,24 +18,24 @@ begin
       clk_rate => 1000000 -- 1 MHz clock rate
     )
     port map (
-      input => input_signal,
+      RX_input => input_signal,
       reset_sig => reset_signal,
       continue_sig => continue_signal,
       input_ready => input_ready_signal,
-      RX_input => RX_input_signal
+      RX_result => RX_input_signal
     );
 
   stimulus_process: process
   begin
     -- Initial reset and signal setup
     reset_signal <= '1';
-    input_signal <= '0';
+    input_signal <= '1';
     continue_signal <= '0';
     wait for 10 ms;
-
     -- Deassert reset and provide stimulus
     reset_signal <= '0';
     continue_signal <= '1';
+    input_signal <= '0';
     wait for 10 ms;
     input_signal <= '1';
     wait for 10 ms;
@@ -50,10 +50,13 @@ begin
     input_signal <= '0';
     wait for 10 ms;
     input_signal <= '1';
+    wait for 10 ms;
+    input_signal <= '0';
     wait for 10 ms;
     continue_signal <= '0';
     wait for 10 ms;
     reset_signal <= '1';
+    input_signal <= '1';
     wait;
   end process;
 
